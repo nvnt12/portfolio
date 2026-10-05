@@ -9,6 +9,7 @@ export const site = {
   email: "admin@nvnt.in",
   url: "https://nvnt.in", // the domain this site will be deployed on
   available: true,
+  tagline: "Frontend engineer. Fast interfaces, tidy state, and the small details that make people smile.",
   intro:
     "Frontend engineer building fast, considered interfaces with React and Next.js. These days I also make the architecture calls behind them.",
 };

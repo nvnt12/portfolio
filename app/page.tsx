@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { ScrambleText } from "@/components/ScrambleText";
+import { DraggableDot } from "@/components/DraggableDot";
 import { LocalTime } from "@/components/LocalTime";
 import { Section } from "@/components/Section";
 import { ProjectCard } from "@/components/ProjectCard";
@@ -34,6 +35,7 @@ export default function Home() {
         <Reveal delay={0.05}>
           <h1 className="mt-6 text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl">
             <ScrambleText text={site.name} />
+            <DraggableDot />
           </h1>
           <p className="mt-3 font-mono text-sm text-accent">{site.role}</p>
         </Reveal>

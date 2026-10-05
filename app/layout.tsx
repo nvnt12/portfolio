@@ -4,6 +4,9 @@ import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CommandMenu } from "@/components/CommandMenu";
+import { Background } from "@/components/Background";
+import { DotRain } from "@/components/DotRain";
+import { EasterEggs } from "@/components/EasterEggs";
 import { site } from "@/lib/data";
 import { themeScript } from "@/lib/theme";
 
@@ -20,8 +23,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f4f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#1e1e1e" },
   ],
 };
 
@@ -31,20 +34,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="flex min-h-dvh flex-col bg-bg font-sans text-fg antialiased">
+      <body className="flex min-h-dvh flex-col overflow-x-clip bg-bg font-sans text-fg antialiased">
         <a
           href="#main"
           className="sr-only z-[70] rounded-md bg-fg px-3 py-2 text-sm text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           Skip to content
         </a>
-        <div aria-hidden className="bg-dots pointer-events-none fixed inset-0 -z-10" />
+        <Background />
         <Nav />
         <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 pb-28 sm:px-6">
           {children}
         </main>
         <Footer />
         <CommandMenu />
+        <DotRain />
+        <EasterEggs />
       </body>
     </html>
   );

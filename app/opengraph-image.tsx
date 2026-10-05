@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/data";
+import { LOGO_DOT, LOGO_PATH, LOGO_VIEWBOX } from "@/components/Logo";
 
 export const alt = `${site.name} — ${site.role}`;
 export const size = { width: 1200, height: 630 };
@@ -16,14 +17,17 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: "#0a0a0a",
-          color: "#ededed",
+          background: "#1e1e1e",
+          color: "#f6f4f0",
         }}
       >
-        <div style={{ fontSize: 28, color: "#fb923c" }}>{`${site.short}.`}</div>
+        <svg width="96" height="91" viewBox={LOGO_VIEWBOX}>
+          <path d={LOGO_PATH} fill="#f6f4f0" />
+          <circle {...LOGO_DOT} fill="#fb923c" />
+        </svg>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 96, fontWeight: 600, letterSpacing: -3 }}>{site.name}</div>
-          <div style={{ fontSize: 36, color: "#8f8f8f", marginTop: 12 }}>{`${site.role} · React & Next.js`}</div>
+          <div style={{ fontSize: 36, color: "#9b978f", marginTop: 12 }}>{`${site.role} · React & Next.js`}</div>
         </div>
       </div>
     ),

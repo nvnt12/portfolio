@@ -22,6 +22,7 @@ export function CommandMenu() {
       { label: "Contact", hint: "Page", run: () => router.push("/contact") },
       { label: "Copy email", hint: site.email, run: () => void navigator.clipboard?.writeText(site.email) },
       { label: "Toggle theme", hint: "Action", run: toggleTheme },
+      { label: "Make it rain dots", hint: "Whimsy", run: () => void window.dispatchEvent(new Event("dot-rain")) },
       ...socials.map((s) => ({
         label: `Open ${s.label}`,
         hint: "Link",

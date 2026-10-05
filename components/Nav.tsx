@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { site } from "@/lib/data";
+import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { Command } from "./Icons";
 
@@ -19,9 +19,8 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-line/60 bg-bg/75 backdrop-blur-md">
       <nav aria-label="Main" className="mx-auto flex h-14 w-full max-w-3xl items-center justify-between gap-2 px-4 sm:px-6">
-        <Link href="/" className="font-mono text-sm font-medium tracking-tight">
-          {site.short}
-          <span className="text-accent">.</span>
+        <Link href="/" aria-label="Home" className="group -m-1 rounded-md p-1">
+          <Logo className="h-6 w-auto" />
         </Link>
 
         <div className="flex items-center gap-1">
