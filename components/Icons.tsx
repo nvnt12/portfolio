@@ -34,3 +34,6 @@ export const Copy = (p: P) => (
 export const Check = (p: P) => (
   <svg {...base} {...p}><path d="M20 6 9 17l-5-5" /></svg>
 );
+export const ExternalLink = (p: P) => (
+  <svg {...base} {...p}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h6M15 3h6v6M10 14l8-8" /></svg>
+);

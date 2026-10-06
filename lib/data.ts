@@ -17,9 +17,11 @@ export const site = {
 // Leave href empty to hide a link.
 export const socials = [
   { label: "GitHub", href: "https://github.com/nvnt12" },
-  { label: "LinkedIn", href: "" },
-  { label: "X", href: "" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/navneetchadha12" },
+  { label: "X", href: "https://x.com/chadhanavneet02" },
 ].filter((s) => s.href);
+
+export const booking = "https://cal.com/navneet-chadha-cpk0lr/30min?overlayCalendar=true";
 
 export const now = [
   "Owning frontend architecture across five production apps at 8848 Digital",
@@ -116,6 +118,7 @@ export const projects: Project[] = [
     description:
       "This site. Server-rendered pages, a ⌘K command menu, theme switching with view transitions, and no images.",
     stack: ["Next.js 16", "React 19", "Tailwind CSS v4", "Motion"],
+    live: "https://nvnt.in",
     source: "https://github.com/nvnt12/portfolio",
   },
 ];

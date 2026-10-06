@@ -7,8 +7,11 @@ import { CommandMenu } from "@/components/CommandMenu";
 import { Background } from "@/components/Background";
 import { DotRain } from "@/components/DotRain";
 import { EasterEggs } from "@/components/EasterEggs";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { ClickBurst } from "@/components/ClickBurst";
 import { site } from "@/lib/data";
-import { themeScript } from "@/lib/theme";
+import { introScript, themeScript } from "@/lib/theme";
+import { Loader } from "@/components/Loader";
 
 const sans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -33,6 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" suppressHydrationWarning className={`${sans.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body className="flex min-h-dvh flex-col overflow-x-clip bg-bg font-sans text-fg antialiased">
         <a
@@ -41,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
+        <Loader />
         <Background />
         <Nav />
         <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 pb-28 sm:px-6">
@@ -50,6 +55,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <CommandMenu />
         <DotRain />
         <EasterEggs />
+        <ScrollProgress />
+        <ClickBurst />
       </body>
     </html>
   );

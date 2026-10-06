@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { InteractiveElement } from "@/components/InteractiveElement";
 import { ScrambleText } from "@/components/ScrambleText";
 import { DraggableDot } from "@/components/DraggableDot";
 import { LocalTime } from "@/components/LocalTime";
 import { Section } from "@/components/Section";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ExperienceList } from "@/components/ExperienceList";
-import { Marquee } from "@/components/Marquee";
-import { ArrowRight } from "@/components/Icons";
-import { now, projects, site, stack } from "@/lib/data";
+import { Marquee } from "@/components/Marquee";import { ArrowRight } from "@/components/Icons";
+import { now, projects, site, stack, booking } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -52,12 +52,14 @@ export default function Home() {
             See my work
             <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
           </Link>
-          <Link
-            href="/contact"
-            className="rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-fg/30"
+          <a
+            href={booking}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-fg/30 hover:bg-fg/5"
           >
-            Get in touch
-          </Link>
+            Book a call
+          </a>
           <span className="hidden font-mono text-xs text-muted sm:inline">
             or press <kbd className="rounded border border-line bg-card px-1.5 py-0.5">Ctrl</kbd>{" "}
             <kbd className="rounded border border-line bg-card px-1.5 py-0.5">K</kbd>
@@ -69,9 +71,11 @@ export default function Home() {
         <ul className="space-y-3">
           {now.map((item, i) => (
             <li key={item}>
-              <Reveal delay={i * 0.05} className="flex gap-3 text-pretty">
-                <span className="font-mono text-xs leading-7 text-accent">0{i + 1}</span>
-                <span className="leading-7">{item}</span>
+              <Reveal delay={i * 0.05}>
+                <InteractiveElement className="flex cursor-default gap-3 text-pretty">
+                  <span className="font-mono text-xs leading-7 text-accent">0{i + 1}</span>
+                  <span className="leading-7">{item}</span>
+                </InteractiveElement>
               </Reveal>
             </li>
           ))}
@@ -81,8 +85,8 @@ export default function Home() {
       <Section
         title="Selected work"
         action={
-          <Link href="/work" className="font-mono text-xs text-muted hover:text-fg">
-            All work →
+          <Link href="/projects" className="font-mono text-xs text-muted hover:text-fg">
+            All projects →
           </Link>
         }
       >
@@ -110,7 +114,6 @@ export default function Home() {
         <Reveal>
           <Marquee items={stack.flatMap((g) => g.items)} />
         </Reveal>
-      </Section>
-    </>
+      </Section>    </>
   );
 }

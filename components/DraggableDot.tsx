@@ -31,7 +31,8 @@ export function DraggableDot() {
         whileHover={{ scale: 1.15 }}
         whileDrag={{ scale: 1.35 }}
         onDragEnd={() => setFlings((f) => f + 1)}
-        className="ml-[0.05em] inline-block size-[0.2em] cursor-grab touch-none rounded-full bg-accent align-[0.62em] active:cursor-grabbing"
+        onTap={() => window.dispatchEvent(new Event("dot-rain"))}
+        className="relative ml-[0.05em] inline-block size-[0.2em] cursor-grab touch-none rounded-full bg-accent align-[0.62em] after:absolute after:-inset-[0.3em] after:content-[''] active:cursor-grabbing"
       />
       {!reduce && (
         <AnimatePresence mode="wait">

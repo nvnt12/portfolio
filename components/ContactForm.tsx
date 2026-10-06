@@ -3,19 +3,42 @@
 import { useState, type FormEvent } from "react";
 import { ArrowRight } from "./Icons";
 
-/** No backend needed: composes the message in the visitor's email app. */
+/** No backend: opens the visitor's email app, and falls back to copying the message if nothing opens. */
 export function ContactForm({ email }: { email: string }) {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("");
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const name = String(data.get("name") ?? "");
-    const message = String(data.get("message") ?? "");
-    const subject = encodeURIComponent(`Hello from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name}`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    const name = String(data.get("name") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+    const subject = `Hello from ${name}`;
+    const body = `${message}\n\n— ${name}`;
+
+    let opened = false;
+    const onAway = () => {
+      opened = true;
+    };
+    window.addEventListener("blur", onAway, { once: true });
+    document.addEventListener("visibilitychange", onAway, { once: true });
+
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus("Opening your email app…");
+
+    setTimeout(async () => {
+      window.removeEventListener("blur", onAway);
+      document.removeEventListener("visibilitychange", onAway);
+      if (opened) {
+        setStatus("Your email app should have opened. Just press send.");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(`To: ${email}\nSubject: ${subject}\n\n${body}`);
+        setStatus(`No email app opened, so I copied your message. Paste it into an email to ${email}.`);
+      } catch {
+        setStatus(`No email app opened. Please email ${email} directly.`);
+      }
+    }, 1500);
   };
 
   const field =
@@ -40,7 +63,7 @@ export function ContactForm({ email }: { email: string }) {
           <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
         </button>
         <p className="text-xs text-muted" role="status">
-          {sent ? "Your email app should have opened." : "Opens in your email app."}
+          {status || "Opens in your email app."}
         </p>
       </div>
     </form>

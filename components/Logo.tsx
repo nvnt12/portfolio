@@ -5,7 +5,14 @@ export const LOGO_DOT = { cx: 1461.5, cy: 593.5, r: 95.5 };
 
 export function Logo({ className, title = "Navneet Chadha" }: { className?: string; title?: string }) {
   return (
-    <svg viewBox={LOGO_VIEWBOX} fill="currentColor" role="img" aria-label={title} className={className}>
+    <svg
+      viewBox={LOGO_VIEWBOX}
+      fill="currentColor"
+      role="img"
+      aria-label={title}
+      overflow="visible"
+      className={className}
+    >
       <path d={LOGO_PATH} />
       <circle className="logo-dot" {...LOGO_DOT} />
     </svg>

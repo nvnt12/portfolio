@@ -1,17 +1,23 @@
 import Link from "next/link";
-import { site, socials } from "@/lib/data";
+import { site, socials, booking } from "@/lib/data";
 import { Logo } from "./Logo";
 import { LocalTime } from "./LocalTime";
 import { BackToTop } from "./BackToTop";
+import { DotsButton } from "./DotsButton";
 
 const pages = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
+  { label: "Projects", href: "/projects" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-const elsewhere = [...socials, { label: "Email", href: `mailto:${site.email}` }];
+const elsewhere = [
+  ...socials,
+  { label: "Email", href: `mailto:${site.email}` },
+  { label: "Book a call", href: booking },
+];
 
 function Column({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -52,12 +58,12 @@ export function Footer() {
             ))}
           </Column>
 
-          <Column title="Elsewhere">
+          <Column title="Connect">
             {elsewhere.map((s) => (
               <li key={s.label}>
                 <a
                   href={s.href}
-                  {...(s.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(s.href.startsWith("http") || s.href.startsWith("mailto:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className={linkClass}
                 >
                   {s.label}
@@ -67,9 +73,10 @@ export function Footer() {
           </Column>
         </div>
 
-        <p className="mt-12 font-mono text-xs text-muted">
+        <p className="mt-12 font-mono text-xs text-muted pointer-coarse:hidden">
           psst: type <kbd className="rounded border border-line bg-card px-1">dots</kbd> anywhere.
         </p>
+        <DotsButton className="mt-12 hidden font-mono text-xs text-muted active:text-fg pointer-coarse:inline" />
 
         <div className="mt-6 flex flex-col gap-3 border-t border-line py-6 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
