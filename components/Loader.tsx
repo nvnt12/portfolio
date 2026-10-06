@@ -6,9 +6,9 @@ import { LOGO_DOT, LOGO_PATH, LOGO_VIEWBOX } from "./Logo";
 
 const HOME = { x: LOGO_DOT.cx, y: LOGO_DOT.cy };
 const START = { x: 594, y: 1400 };
-const TAIL = 9;
-const LAG = 0.014;
-const DURATION = 2.8;
+const TAIL = 6;
+const LAG = 0.02;
+const DURATION = 1.6;
 
 const clamp = (n: number) => Math.min(1, Math.max(0, n));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -75,10 +75,10 @@ export function Loader() {
     const unsub = progress.on("change", apply);
     const run = animate(progress, 1, { duration: DURATION, ease: [0.45, 0, 0.25, 1] });
     run.then(() => {
-      const out = animate(opacity, 0, { duration: 0.55, delay: 0.3, ease: "easeOut" });
+      const out = animate(opacity, 0, { duration: 0.4, delay: 0.1, ease: "easeOut" });
       out.then(finish);
     });
-    const fallback = window.setTimeout(finish, (DURATION + 3) * 1000);
+    const fallback = window.setTimeout(finish, (DURATION + 2) * 1000);
 
     return () => {
       unsub();
@@ -116,9 +116,10 @@ export function Loader() {
               cy={d.y}
               r={LOGO_DOT.r * (1 - (i / (TAIL + 1)) * 0.75)}
               className="fill-accent"
-              style={i === 0 ? { filter: "drop-shadow(0 0 22px var(--accent))" } : { opacity: 0.55 * (1 - i / (TAIL + 1)) }}
+              style={i === 0 ? undefined : { opacity: 0.55 * (1 - i / (TAIL + 1)) }}
             />
           ))}
+        <motion.circle cx={dots[0].x} cy={dots[0].y} r={LOGO_DOT.r * 2.3} className="fill-accent" style={{ opacity: 0.18 }} />
       </svg>
     </motion.div>
   );
