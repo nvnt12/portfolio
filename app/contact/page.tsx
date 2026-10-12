@@ -19,7 +19,7 @@ export default function Contact() {
         <CopyEmail email={site.email} />
       </Reveal>
       <Reveal delay={0.1} className="mt-14 max-w-lg">
-        <ContactForm email={site.email} />
+        <ContactForm />
       </Reveal>
     </div>
   );
