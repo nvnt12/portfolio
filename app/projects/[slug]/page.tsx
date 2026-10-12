@@ -20,6 +20,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return project ? { title: project.title, description: project.description } : {};
 }
 
+function Paragraphs({ items }: { items: string[] }) {
+  return (
+    <div className="space-y-4">
+      {items.map((para) => (
+        <Reveal key={para}>
+          <p className="leading-relaxed text-pretty text-fg/90">{para}</p>
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
 function Points({ items }: { items: string[] }) {
   return (
     <Reveal>
@@ -78,13 +90,28 @@ export default async function ProjectPage({ params }: Props) {
       </Reveal>
 
       <Section title="The idea">
-        <div className="space-y-4">
-          {project.idea.map((para) => (
-            <Reveal key={para}>
-              <p className="leading-relaxed text-pretty text-fg/90">{para}</p>
-            </Reveal>
-          ))}
-        </div>
+        <Paragraphs items={project.idea} />
+      </Section>
+
+      <Section title="Scope">
+        <Paragraphs items={project.scope} />
+      </Section>
+
+      {project.users && (
+        <Section title="Who uses it">
+          <div className="grid gap-3 sm:grid-cols-2">
+            {project.users.map((u, i) => (
+              <Reveal key={u.role} delay={i * 0.04} className="h-full rounded-lg border border-line bg-card/40 p-4">
+                <h3 className="text-sm font-medium">{u.role}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{u.does}</p>
+              </Reveal>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      <Section title="Features">
+        <Points items={project.features} />
       </Section>
 
       <Section title="Tech stack">
@@ -97,10 +124,6 @@ export default async function ProjectPage({ params }: Props) {
             ))}
           </ul>
         </Reveal>
-      </Section>
-
-      <Section title="Scope">
-        <Points items={project.scope} />
       </Section>
 
       <Section title="Limitations">

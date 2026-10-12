@@ -98,7 +98,9 @@ export type Project = {
   source?: string;
   // The rest is for the project's own page at /projects/[slug].
   idea: string[];
-  scope: string[];
+  scope: string[]; // what it covers, who it's for, and where it stops
+  users?: { role: string; does: string }[];
+  features: string[];
   limitations: string[];
   future: string[];
 };
@@ -108,7 +110,8 @@ export const projects: Project[] = [
     slug: "coworkhq",
     title: "CoWorkHQ",
     description:
-      "Booking and management for coworking spaces: conflict-free desk and room booking, QR check-in, payments and billing, on web and native mobile.",
+      "A marketplace for coworking spaces: conflict-free desk and room booking, Razorpay payments, QR-pass check-in and per-organisation management, on web and native mobile.",
+    live: "https://coworkhq.nvnt.in",
     stack: [
       "React",
       "Vite",
@@ -132,31 +135,60 @@ export const projects: Project[] = [
       "I wanted it on the web and as a real native app without writing the business logic twice. That decided the architecture: a monorepo where both clients share one API client, one set of types and one set of rules, and only the UI is platform-specific.",
     ],
     scope: [
-      "A pnpm + Turborepo monorepo: Vite web app, Expo mobile app and Express API, sharing core logic and TypeScript types.",
-      "Email/password and Google sign-in through Supabase. The API verifies the token and enforces every role and permission check itself; hiding screens is only a convenience.",
-      "Conflict-free booking guaranteed by a PostgreSQL constraint, not a UI check. Reschedule or cancel any time before it starts.",
-      "Razorpay payments. The slot is held for 15 minutes while someone pays, settled exactly once from the redirect, the webhook or a server-side check, and refunded automatically if it can’t be kept.",
-      "Search and filter by location, type, seats, price, amenities and live availability for a chosen time, sorted by distance with “near me”.",
-      "Check-in for members and a front-desk mode for staff; pay-per-visit billing counts check-ins.",
-      "Marketplace roles: a platform admin, organisation admins, and staff with per-person permissions (front desk, spaces, events, revenue, booking for customers).",
-      "Monthly billing statements, revenue per organisation, community events with RSVPs, and a ⌘K command palette on web.",
-      "Mobile isn’t a port. Booking and tables are rebuilt for touch: tap an hour on a day grid instead of dragging across a week calendar.",
+      "A marketplace for coworking spaces in India. Many coworking businesses list their locations on one platform, and customers book across all of them with one account.",
+      "It covers the whole visit: finding a space, booking and paying for it, and checking in at the desk. It also covers the operator’s side: locations, spaces, staff, events and revenue.",
+      "Three clients share one core: a web app for members and admins, a native iOS and Android app for members and the front desk, and one API that enforces every rule. Hiding a screen in an app is only a convenience; the server decides.",
+      "Out of scope for now: door access hardware, accounting and GST, and paying organisations out automatically.",
+    ],
+    users: [
+      {
+        role: "Customer",
+        does: "Anyone who signs up. Finds, books and pays for desks and rooms at any organisation, checks in with their pass, and RSVPs to events.",
+      },
+      {
+        role: "Organisation admin",
+        does: "Runs a coworking business. Manages its own locations, spaces, events, revenue, front desk, team and permissions, and never sees other organisations.",
+      },
+      {
+        role: "Staff",
+        does: "Works for one organisation and only gets what their admin switches on: front desk, booking for customers, managing spaces or events, viewing revenue.",
+      },
+      {
+        role: "Platform admin",
+        does: "Owns the marketplace. Adds, renames and suspends organisations, and sees what each one earns.",
+      },
+    ],
+    features: [
+      "Email/password and Google sign-in. Invited colleagues land in their organisation as soon as they sign up.",
+      "Locations with an address, map position and opening hours; desks and rooms with amenities and an hourly price.",
+      "Search and filters for location, type, seats, price, amenities and live availability at a chosen time, sorted by distance with “near me”.",
+      "Conflict-free booking, guaranteed by a PostgreSQL constraint rather than a UI check. Move a booking to another day or time up to 14 days ahead, or cancel it before it starts.",
+      "Razorpay payments by card, UPI, netbanking or wallet. The slot is held for 15 minutes while someone pays, every payment is settled exactly once, and cancelling refunds automatically.",
+      "Staff can book for a walk-in customer and collect payment at the desk or with a Razorpay link and QR code.",
+      "Every booking gets a QR pass. The front desk scans it with a phone or laptop camera, or a handheld scanner, and the person is checked in or told exactly why not.",
+      "Self check-in from 30 minutes before a booking, check-out, and pay-per-visit billing worked out from check-ins.",
+      "Monthly billing statements, revenue per organisation and a pay-per-visit report.",
+      "Community events per location, with RSVPs and capacity.",
+      "Per-person staff permissions, checked by the API on every request.",
+      "A native app built for touch, not a port: pick a day and tap an hour instead of dragging across a week calendar.",
+      "Saved spaces, a ⌘K command palette on web, and light and dark themes.",
     ],
     limitations: [
-      "Every online payment lands in one platform Razorpay account, so paying organisations out is manual.",
-      "Spaces have no photos yet; the data model has none, so each one gets a generated plate.",
-      "No GST invoices, no partial refunds, and no email or push notifications.",
-      "The QR pass is a reference to show at the desk, not a door key, and mobile shows it as text rather than a QR code.",
+      "Every online payment lands in one platform Razorpay account, and organisations are paid out by hand.",
+      "Refunds are all or nothing and the same for every organisation: cancel before the start and you get it all back. There are no partial refunds, cancellation fees or cut-off windows.",
+      "Only the customer can move their own booking, and only within a fixed 14-day window. A paid booking can change time but not length.",
+      "Spaces have no photos yet; each one gets a generated plate instead.",
+      "No GST invoices, and no email or push notifications.",
+      "The QR pass checks you in at the desk; it doesn’t open a door.",
       "Team and platform admin panels are web-only; mobile shows the team read-only.",
-      "The API is written as a long-lived server but deployed serverless, so cold starts make the first requests slow.",
     ],
     future: [
-      "Automatic payouts to each organisation with Razorpay Route.",
-      "GST-compliant invoices, receipts and partial refunds.",
-      "Booking reminders and check-in nudges by email and push.",
-      "Space photos through object storage, and an occupancy dashboard for operators.",
-      "Door hardware integration, so the pass actually opens the door.",
-      "Move the API to a long-lived host like Railway or Render to get rid of cold starts.",
+      "Bring your own Razorpay: each organisation connects its own account, so money goes straight to them and there are no payouts to manage.",
+      "Per-organisation policies: refund rules (full, partial, cut-off times, cancellation fees), how far ahead people can book, and how late a booking can be moved.",
+      "A café or canteen section: organisations add a menu per location and manage orders, and members order to their desk and pay with the booking or on their monthly bill.",
+      "More flexible moves: staff can move a customer’s booking, and a paid booking can get longer or shorter with a top-up or a partial refund.",
+      "GST-compliant invoices and receipts, plus booking reminders by email and push.",
+      "Space photos, an occupancy dashboard for operators, and door hardware so the pass opens the door.",
     ],
   },
   {
@@ -172,7 +204,11 @@ export const projects: Project[] = [
       "The one rule was no images. Everything is type, CSS and a few dots, which keeps it fast and makes the design come from layout and motion instead of screenshots.",
     ],
     scope: [
-      "Server-rendered pages on the Next.js App Router, with all content in one data file.",
+      "A personal site for recruiters, hiring managers and other developers: who I am, what I’ve built, and how to reach me.",
+      "Fully static and server-rendered, with no CMS, database or images. Content lives in one data file in the repo.",
+    ],
+    features: [
+      "Server-rendered pages on the Next.js App Router, with a dedicated page for each project.",
       "A ⌘K command menu for pages, socials and theme.",
       "Light and dark themes with view transitions, applied before first paint so there’s no flash.",
       "An intro loader, a draggable dot, dot rain, click bursts and a few hidden easter eggs, all respecting reduced motion.",
