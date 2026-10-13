@@ -48,7 +48,7 @@ export const experience: Role[] = [
     title: "Frontend Developer",
     period: "May 2026 — Now",
     points: [
-      "Promoted to lead frontend architecture for 5+ production applications serving 50K+ users.",
+      "Promoted to lead frontend architecture for 5+ production applications serving thousands of users.",
       "Improved performance: Lighthouse 68 → 92 and a 35% smaller bundle through code splitting and memoization.",
       "Designed the state management architecture with Redux Toolkit, Zustand and TanStack Query, cutting down recurring state bugs.",
       "Set up the E2E testing strategy, worked with the backend team on API design, and mentored junior developers.",
