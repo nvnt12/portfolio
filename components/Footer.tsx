@@ -7,8 +7,8 @@ import { DotsButton } from "./DotsButton";
 
 const pages = [
   { label: "Home", href: "/" },
-  { label: "Work", href: "/work" },
   { label: "Projects", href: "/projects" },
+  { label: "Notes", href: "/notes" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

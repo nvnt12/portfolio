@@ -13,8 +13,9 @@ export function toggleTheme() {
   else apply();
 }
 
-// Marks the page as loading before paint, once per session, unless the visitor prefers reduced motion.
-export const introScript = `(function(){try{if(!sessionStorage.getItem('nvnt-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('is-loading')}catch(e){}})()`;
+// Marks the page as loading before paint: only on the home page, only on a first visit, and never for
+// visitors who prefer reduced motion. Anyone landing on a project link goes straight to the content.
+export const introScript = `(function(){try{if(location.pathname==='/'&&!localStorage.getItem('nvnt-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('is-loading')}catch(e){}})()`;
 
 // Runs before paint so there is no flash of the wrong theme.
 export const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark')}catch(e){document.documentElement.classList.add('dark')}})()`;

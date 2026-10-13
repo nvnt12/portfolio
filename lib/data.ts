@@ -9,9 +9,15 @@ export const site = {
   email: "admin@nvnt.in",
   url: "https://nvnt.in", // the domain this site will be deployed on
   available: true,
+  // The at-a-glance line under the intro: what a recruiter checks first.
+  years: "3+",
+  core: ["React", "Next.js", "TypeScript"],
+  workPrefs: "Remote (IST) or relocation with visa sponsorship",
+  noticePeriod: "", // e.g. "30 days"; leave empty to hide
+  resume: "", // drop a PDF in public/ and set e.g. "/resume.pdf"; leave empty to hide the button
   tagline: "Frontend engineer. Fast interfaces, tidy state, and the small details that make people smile.",
   intro:
-    "Frontend engineer building fast, considered interfaces with React and Next.js. These days I also make the architecture calls behind them.",
+    "Frontend engineer who ships full-stack. I build fast, considered interfaces with React and Next.js, plus the APIs and native apps behind them when a product needs it. These days I also make the architecture calls.",
 };
 
 // Leave href empty to hide a link.
@@ -25,8 +31,8 @@ export const booking = "https://cal.com/navneet-chadha-cpk0lr/30min?overlayCalen
 
 export const now = [
   "Owning frontend architecture across five production apps at 8848 Digital",
+  "Building CoWorkHQ, a coworking marketplace on web and native mobile",
   "Going deeper on rendering performance and Core Web Vitals",
-  "Open to frontend roles — remote, or relocation with visa sponsorship",
 ];
 
 export type Role = {
@@ -101,6 +107,7 @@ export type Project = {
   scope: string[]; // what it covers, who it's for, and where it stops
   users?: { role: string; does: string }[];
   features: string[];
+  highlights?: { title: string; body: string }[]; // the hard problems and how they were solved
   limitations: string[];
   future: string[];
 };
@@ -173,6 +180,28 @@ export const projects: Project[] = [
       "A native app built for touch, not a port: pick a day and tap an hour instead of dragging across a week calendar.",
       "Saved spaces, a ⌘K command palette on web, and light and dark themes.",
     ],
+    highlights: [
+      {
+        title: "Double booking is impossible, not just unlikely",
+        body: "A Postgres EXCLUDE constraint over each space’s time ranges rejects any overlapping booking that isn’t cancelled, including slots held while someone pays. The API turns the violation into a clean “slot taken”, so two people racing for the same room can never both win, whatever the UI showed them.",
+      },
+      {
+        title: "Every payment is settled exactly once",
+        body: "A payment can be reported three ways (the browser redirect, the webhook and a server-side check), in any order or all at once. The first report claims it with a conditional update and the rest read back the decision. A payment that can’t be kept (a lapsed hold, a cancelled booking, a duplicate) is refunded, and a refund that fails halfway finishes on the next webhook retry.",
+      },
+      {
+        title: "One core, two clients that each feel native",
+        body: "Web and mobile share the API client, data hooks, types and business rules from one package, so a rule changes in exactly one place. The UI is deliberately not shared: dragging across a week calendar on web becomes picking a day and tapping an hour on a phone.",
+      },
+      {
+        title: "Authorisation lives on the server",
+        body: "Every route checks a permission and that whatever it touches belongs to the caller’s organisation. A pass from another organisation scans as “not found”, exactly like a random code, so nothing leaks about who else is on the platform.",
+      },
+      {
+        title: "A bug that only appeared six minutes into a cloud build",
+        body: "Mismatched native versions of two animation libraries passed locally, in the type checker and in an Expo export, and only failed when Gradle compiled native code. It took three failed builds to find. The versions are now pinned to what the Expo SDK ships, with the reason written next to them.",
+      },
+    ],
     limitations: [
       "Every online payment lands in one platform Razorpay account, and organisations are paid out by hand.",
       "Refunds are all or nothing and the same for every organisation: cancel before the start and you get it all back. There are no partial refunds, cancellation fees or cut-off windows.",
@@ -214,6 +243,16 @@ export const projects: Project[] = [
       "An intro loader, a draggable dot, dot rain, click bursts and a few hidden easter eggs, all respecting reduced motion.",
       "A contact form that delivers messages straight to me, no email app needed.",
       "A generated Open Graph image, sitemap and robots file.",
+    ],
+    highlights: [
+      {
+        title: "No flash, no matter the theme",
+        body: "A tiny inline script picks the theme before the first paint, so a dark-mode visitor never sees a white flash. Theme switches use the View Transitions API when it’s available and the visitor hasn’t asked for reduced motion.",
+      },
+      {
+        title: "A contact form that doesn’t need a mail app",
+        body: "A Server Action validates the message, drops bots with a honeypot field and emails it through Resend from a verified domain, with reply-to set to the visitor. When anything fails, the visitor is told to email directly instead of being left guessing.",
+      },
     ],
     limitations: [
       "Content lives in code, so every edit needs a deploy.",

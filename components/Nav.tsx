@@ -7,10 +7,11 @@ import { AnimatePresence, motion } from "motion/react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { Command } from "./Icons";
+import { site } from "@/lib/data";
 
 const links = [
-  { href: "/work", label: "Work" },
   { href: "/projects", label: "Projects" },
+  { href: "/notes", label: "Notes" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -36,7 +37,7 @@ export function Nav() {
         <div className="flex items-center gap-1">
           <ul className="hidden items-center sm:flex">
             {links.map((l) => {
-              const active = pathname === l.href;
+              const active = pathname === l.href || pathname.startsWith(`${l.href}/`);
               return (
                 <li key={l.href}>
                   <Link
@@ -56,6 +57,18 @@ export function Nav() {
                 </li>
               );
             })}
+            {site.resume && (
+              <li>
+                <a
+                  href={site.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-1 block rounded-full border border-line px-3 py-1 text-sm text-muted transition-colors hover:border-fg/30 hover:text-fg"
+                >
+                  Résumé
+                </a>
+              </li>
+            )}
           </ul>
           <button
             type="button"
@@ -101,7 +114,7 @@ export function Nav() {
           >
             <ul className="mx-auto flex w-full max-w-3xl flex-col px-4 py-3">
               {links.map((l, i) => {
-                const active = pathname === l.href;
+                const active = pathname === l.href || pathname.startsWith(`${l.href}/`);
                 return (
                   <motion.li
                     key={l.href}

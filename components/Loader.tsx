@@ -14,7 +14,7 @@ const clamp = (n: number) => Math.min(1, Math.max(0, n));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
-/** First-visit intro: the dot leaves home, traces the N on its own, returns, then the site fades in. */
+/** First-visit intro (home page only): the dot leaves home, traces the N on its own, returns, then the site fades in. */
 export function Loader() {
   const root = useRef<HTMLDivElement>(null);
   const path = useRef<SVGPathElement>(null);
@@ -67,7 +67,7 @@ export function Loader() {
       if (finished) return;
       finished = true;
       try {
-        sessionStorage.setItem("nvnt-intro", "1");
+        localStorage.setItem("nvnt-intro", "1");
       } catch {}
       html.classList.remove("is-loading");
     };

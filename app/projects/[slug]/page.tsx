@@ -5,6 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { ExternalLink } from "@/components/Icons";
 import { projects } from "@/lib/data";
+import { notes } from "@/lib/notes";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -53,6 +54,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   const next = projects[(projects.indexOf(project) + 1) % projects.length];
+  const related = notes.filter((n) => n.project === project.slug);
 
   return (
     <article className="pt-16 sm:pt-24">
@@ -114,6 +116,19 @@ export default async function ProjectPage({ params }: Props) {
         <Points items={project.features} />
       </Section>
 
+      {project.highlights && (
+        <Section title="Engineering highlights">
+          <div className="space-y-6">
+            {project.highlights.map((h) => (
+              <Reveal key={h.title} className="border-l-2 border-accent/60 pl-4">
+                <h3 className="font-medium">{h.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-pretty text-muted">{h.body}</p>
+              </Reveal>
+            ))}
+          </div>
+        </Section>
+      )}
+
       <Section title="Tech stack">
         <Reveal>
           <ul className="flex flex-wrap gap-1.5">
@@ -133,6 +148,23 @@ export default async function ProjectPage({ params }: Props) {
       <Section title="What's next">
         <Points items={project.future} />
       </Section>
+
+      {related.length > 0 && (
+        <Section title="Write-ups">
+          <Reveal>
+            <ul className="space-y-4">
+              {related.map((n) => (
+                <li key={n.slug}>
+                  <Link href={`/notes/${n.slug}`} className="group block">
+                    <span className="font-medium transition-colors group-hover:text-accent">{n.title} →</span>
+                    <span className="mt-0.5 block text-sm text-muted">{n.summary}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </Section>
+      )}
 
       {next !== project && (
         <Reveal className="mt-24 border-t border-line pt-8">

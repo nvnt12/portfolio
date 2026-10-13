@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { site, socials } from "@/lib/data";
+import { projects, site, socials } from "@/lib/data";
 import { toggleTheme } from "@/lib/theme";
 
 type Item = { label: string; hint: string; run: () => void };
@@ -17,9 +17,14 @@ export function CommandMenu() {
   const items: Item[] = useMemo(
     () => [
       { label: "Home", hint: "Page", run: () => router.push("/") },
-      { label: "Work", hint: "Page", run: () => router.push("/work") },
+      { label: "Projects", hint: "Page", run: () => router.push("/projects") },
+      ...projects.map((p) => ({ label: p.title, hint: "Project", run: () => router.push(`/projects/${p.slug}`) })),
+      { label: "Notes", hint: "Page", run: () => router.push("/notes") },
       { label: "About", hint: "Page", run: () => router.push("/about") },
       { label: "Contact", hint: "Page", run: () => router.push("/contact") },
+      ...(site.resume
+        ? [{ label: "Open résumé", hint: "PDF", run: () => void window.open(site.resume, "_blank", "noopener,noreferrer") }]
+        : []),
       { label: "Copy email", hint: site.email, run: () => void navigator.clipboard?.writeText(site.email) },
       { label: "Toggle theme", hint: "Action", run: toggleTheme },
       { label: "Make it rain dots", hint: "Whimsy", run: () => void window.dispatchEvent(new Event("dot-rain")) },

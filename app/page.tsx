@@ -42,16 +42,41 @@ export default function Home() {
 
         <Reveal delay={0.1}>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-pretty text-muted">{site.intro}</p>
+          <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-xs text-fg/80">
+            {[
+              `${site.years} years`,
+              site.core.join(" · "),
+              site.workPrefs,
+              site.noticePeriod && `Notice: ${site.noticePeriod}`,
+            ]
+              .filter(Boolean)
+              .map((fact, i) => (
+                <li key={fact} className="flex items-center gap-3">
+                  {i > 0 && <span aria-hidden className="text-muted">/</span>}
+                  {fact}
+                </li>
+              ))}
+          </ul>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-8 flex flex-wrap items-center gap-3">
           <Link
-            href="/work"
+            href="/projects"
             className="group inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-transform active:scale-[0.97]"
           >
             See my work
             <ArrowRight className="transition-transform group-hover:translate-x-0.5" />
           </Link>
+          {site.resume && (
+            <a
+              href={site.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-line px-5 py-2.5 text-sm font-medium transition-colors hover:border-fg/30 hover:bg-fg/5"
+            >
+              Résumé
+            </a>
+          )}
           <a
             href={booking}
             target="_blank"
@@ -90,10 +115,10 @@ export default function Home() {
           </Link>
         }
       >
-        <div className="grid gap-4 sm:grid-cols-2">
-          {projects.slice(0, 2).map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.06}>
-              <ProjectCard project={p} />
+        <div className="grid gap-4">
+          {projects.slice(0, 3).map((p, i) => (
+            <Reveal key={p.slug} delay={i * 0.06}>
+              <ProjectCard project={p} featured={i === 0} />
             </Reveal>
           ))}
         </div>
