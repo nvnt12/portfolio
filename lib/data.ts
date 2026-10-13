@@ -30,7 +30,7 @@ export const socials = [
 export const booking = "https://cal.com/navneet-chadha-cpk0lr/30min?overlayCalendar=true";
 
 export const now = [
-  "Owning frontend architecture across five production apps at 8848 Digital",
+  "Leading frontend architecture across 5+ production apps at 8848 Digital",
   "Building CoWorkHQ, a coworking marketplace on web and native mobile",
   "Going deeper on rendering performance and Core Web Vitals",
 ];
@@ -48,9 +48,10 @@ export const experience: Role[] = [
     title: "Frontend Developer",
     period: "May 2026 — Now",
     points: [
-      "Own frontend architecture and technical decisions across five production applications.",
-      "Set project structure, state-management patterns and tooling standards for new builds.",
-      "Review code and guide teammates on React and Next.js practices.",
+      "Promoted to lead frontend architecture for 5+ production applications serving 50K+ users.",
+      "Improved performance: Lighthouse 68 → 92 and a 35% smaller bundle through code splitting and memoization.",
+      "Designed the state management architecture with Redux Toolkit, Zustand and TanStack Query, cutting down recurring state bugs.",
+      "Set up the E2E testing strategy, worked with the backend team on API design, and mentored junior developers.",
     ],
   },
   {
