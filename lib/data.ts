@@ -14,7 +14,7 @@ export const site = {
   core: ["React", "Next.js", "TypeScript"],
   workPrefs: "Remote (IST) or relocation with visa sponsorship",
   noticePeriod: "", // e.g. "30 days"; leave empty to hide
-  resume: "", // drop a PDF in public/ and set e.g. "/resume.pdf"; leave empty to hide the button
+  resume: "/navneet-chadha-resume.pdf", // a PDF in public/; leave empty to hide the button
   tagline: "Frontend engineer. Fast interfaces, tidy state, and the small details that make people smile.",
   intro:
     "Frontend engineer who ships full-stack. I build fast, considered interfaces with React and Next.js, plus the APIs and native apps behind them when a product needs it. These days I also make the architecture calls.",
