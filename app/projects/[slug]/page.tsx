@@ -141,14 +141,6 @@ export default async function ProjectPage({ params }: Props) {
         </Reveal>
       </Section>
 
-      <Section title="Limitations">
-        <Points items={project.limitations} />
-      </Section>
-
-      <Section title="What's next">
-        <Points items={project.future} />
-      </Section>
-
       {related.length > 0 && (
         <Section title="Write-ups">
           <Reveal>

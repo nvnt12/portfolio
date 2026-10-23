@@ -109,8 +109,6 @@ export type Project = {
   users?: { role: string; does: string }[];
   features: string[];
   highlights?: { title: string; body: string }[]; // the hard problems and how they were solved
-  limitations: string[];
-  future: string[];
 };
 
 export const projects: Project[] = [
@@ -118,7 +116,7 @@ export const projects: Project[] = [
     slug: "coworkhq",
     title: "CoWorkHQ",
     description:
-      "A marketplace for coworking spaces: conflict-free desk and room booking, Razorpay payments, QR-pass check-in and per-organisation management, on web and native mobile.",
+      "A marketplace for coworking spaces: conflict-free desk and room booking, payments into each operator’s own Razorpay account, QR-pass check-in and white-label builds, on web and native mobile.",
     live: "https://coworkhq.nvnt.in",
     stack: [
       "React",
@@ -133,7 +131,10 @@ export const projects: Project[] = [
       "Prisma",
       "PostgreSQL",
       "Supabase Auth",
+      "Supabase Storage",
       "Razorpay",
+      "Resend",
+      "Expo Notifications",
       "Turborepo",
       "pnpm",
     ],
@@ -146,7 +147,8 @@ export const projects: Project[] = [
       "A marketplace for coworking spaces in India. Many coworking businesses list their locations on one platform, and customers book across all of them with one account.",
       "It covers the whole visit: finding a space, booking and paying for it, and checking in at the desk. It also covers the operator’s side: locations, spaces, staff, events and revenue.",
       "Three clients share one core: a web app for members and admins, a native iOS and Android app for members and the front desk, and one API that enforces every rule. Hiding a screen in an app is only a convenience; the server decides.",
-      "Out of scope for now: door access hardware, accounting and GST, and paying organisations out automatically.",
+      "Each organisation connects its own Razorpay account, so customers’ money goes straight to the operator.",
+      "It can also run under a client’s own brand: their name, colours, logo, web address and phone app, built from one brand file.",
     ],
     users: [
       {
@@ -168,16 +170,20 @@ export const projects: Project[] = [
     ],
     features: [
       "Email/password and Google sign-in. Invited colleagues land in their organisation as soon as they sign up.",
-      "Locations with an address, map position and opening hours; desks and rooms with amenities and an hourly price.",
+      "Locations with an address, map position and opening hours; desks and rooms with amenities, an hourly price and up to 8 photos, uploaded from the web or the phone.",
       "Search and filters for location, type, seats, price, amenities and live availability at a chosen time, sorted by distance with “near me”.",
-      "Conflict-free booking, guaranteed by a PostgreSQL constraint rather than a UI check. Move a booking to another day or time up to 14 days ahead, or cancel it before it starts.",
-      "Razorpay payments by card, UPI, netbanking or wallet. The slot is held for 15 minutes while someone pays, every payment is settled exactly once, and cancelling refunds automatically.",
+      "Conflict-free booking, guaranteed by a PostgreSQL constraint rather than a UI check, within the location’s opening hours. Customers can move or cancel a booking when their organisation allows it.",
+      "Per-organisation policies: how far ahead people can book, the longest booking, cancellation and refund cut-offs, moves, self check-in, events and desk payments, all enforced by the API.",
+      "Each organisation connects its own Razorpay account for card, UPI, netbanking or wallet payments. The slot is held for 15 minutes while someone pays, every payment is settled exactly once, and refunds follow the organisation’s rules.",
       "Staff can book for a walk-in customer and collect payment at the desk or with a Razorpay link and QR code.",
       "Every booking gets a QR pass. The front desk scans it with a phone or laptop camera, or a handheld scanner, and the person is checked in or told exactly why not.",
       "Self check-in from 30 minutes before a booking, check-out, and pay-per-visit billing worked out from check-ins.",
       "Monthly billing statements, revenue per organisation and a pay-per-visit report.",
+      "Email and push notifications for confirmations, payment links, moves, cancellations and refunds, plus a reminder the day before.",
       "Community events per location, with RSVPs and capacity.",
-      "Per-person staff permissions, checked by the API on every request.",
+      "Per-person staff permissions, checked by the API on every request, and an activity log of what staff did for customers.",
+      "White-label builds: a client’s own name, colours, logo and storefront on web, and their own app on the stores.",
+      "Customers can delete their account from the web or the phone, as the app stores require.",
       "A native app built for touch, not a port: pick a day and tap an hour instead of dragging across a week calendar.",
       "Saved spaces, a ⌘K command palette on web, and light and dark themes.",
     ],
@@ -196,29 +202,12 @@ export const projects: Project[] = [
       },
       {
         title: "Authorisation lives on the server",
-        body: "Every route checks a permission and that whatever it touches belongs to the caller’s organisation. A pass from another organisation scans as “not found”, exactly like a random code, so nothing leaks about who else is on the platform.",
+        body: "Every route checks a permission and that whatever it touches belongs to the caller’s organisation. A pass from another organisation scans as “not found”, exactly like a random code, so nothing leaks about who else is on the platform. Sensitive routes are rate-limited, and the database itself refuses direct access with row-level security.",
       },
       {
-        title: "A bug that only appeared six minutes into a cloud build",
-        body: "Mismatched native versions of two animation libraries passed locally, in the type checker and in an Expo export, and only failed when Gradle compiled native code. It took three failed builds to find. The versions are now pinned to what the Expo SDK ships, with the reason written next to them.",
+        title: "Each organisation’s payment keys, kept safe",
+        body: "Organisations connect their own Razorpay keys, which are checked with a read-only call and stored encrypted with AES-256-GCM, each bound to its organisation. No response ever returns a secret. Every payment records the account that took it, so refunds and webhooks always use the right keys, and each organisation’s webhook only settles its own payments.",
       },
-    ],
-    limitations: [
-      "Every online payment lands in one platform Razorpay account, and organisations are paid out by hand.",
-      "Refunds are all or nothing and the same for every organisation: cancel before the start and you get it all back. There are no partial refunds, cancellation fees or cut-off windows.",
-      "Only the customer can move their own booking, and only within a fixed 14-day window. A paid booking can change time but not length.",
-      "Spaces have no photos yet; each one gets a generated plate instead.",
-      "No GST invoices, and no email or push notifications.",
-      "The QR pass checks you in at the desk; it doesn’t open a door.",
-      "Team and platform admin panels are web-only; mobile shows the team read-only.",
-    ],
-    future: [
-      "Bring your own Razorpay: each organisation connects its own account, so money goes straight to them and there are no payouts to manage.",
-      "Per-organisation policies: refund rules (full, partial, cut-off times, cancellation fees), how far ahead people can book, and how late a booking can be moved.",
-      "A café or canteen section: organisations add a menu per location and manage orders, and members order to their desk and pay with the booking or on their monthly bill.",
-      "More flexible moves: staff can move a customer’s booking, and a paid booking can get longer or shorter with a top-up or a partial refund.",
-      "GST-compliant invoices and receipts, plus booking reminders by email and push.",
-      "Space photos, an occupancy dashboard for operators, and door hardware so the pass opens the door.",
     ],
   },
   {
@@ -254,16 +243,6 @@ export const projects: Project[] = [
         title: "A contact form that doesn’t need a mail app",
         body: "A Server Action validates the message, drops bots with a honeypot field and emails it through Resend from a verified domain, with reply-to set to the visitor. When anything fails, the visitor is told to email directly instead of being left guessing.",
       },
-    ],
-    limitations: [
-      "Content lives in code, so every edit needs a deploy.",
-      "Project pages are text-only, which undersells visual work.",
-      "Most of my professional work is under NDA and can’t be shown here.",
-    ],
-    future: [
-      "A notes section in MDX for write-ups on things I’ve learned.",
-      "Short screen recordings on project pages.",
-      "Privacy-friendly analytics to see what people actually read.",
     ],
   },
 ];
