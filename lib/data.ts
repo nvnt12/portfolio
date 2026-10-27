@@ -211,6 +211,78 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "100-and-done",
+    title: "100 and Done",
+    description:
+      "A doctor, clinic and hospital booking app for iOS and Android. Patients find providers nearby, book a clinic or home visit and keep their records in one place. Providers manage their services, availability, staff and appointments.",
+    stack: [
+      "Expo",
+      "React Native",
+      "TypeScript",
+      "Expo Router",
+      "Supabase",
+      "PostgreSQL",
+      "Row Level Security",
+      "Google Sign-In",
+      "TanStack Query",
+      "Zustand",
+      "React Hook Form",
+      "Zod",
+      "react-native-maps",
+      "EAS Build",
+      "Stallion",
+    ],
+    idea: [
+      "Finding a doctor and booking a visit is still a chain of phone calls. Clinics keep their hours in a notebook, home visits are arranged over text, and patients lose prescriptions between visits.",
+      "100 and Done puts discovery, booking, home visits and records in one app. Patients and providers sign in with the same Google button, and the app sends each to the right side.",
+      "It's a native app only. There is no web version, so there's no live link.",
+    ],
+    scope: [
+      "Patients find providers within a chosen radius, book a clinic visit or a home visit, cancel their own bookings, and keep prescriptions and reports.",
+      "Providers, from an independent doctor to a hospital, set up their services and prices, weekly availability, branches and staff. They then manage appointments and write records for patients they treat.",
+      "The app stops at booking and records. Payments, push notifications and live home-visit tracking are not built yet.",
+    ],
+    users: [
+      {
+        role: "Patient",
+        does: "Finds and books providers, cancels their own appointments, reviews a provider after a completed visit, and keeps records from every provider in one place.",
+      },
+      {
+        role: "Provider (independent doctor, clinic or hospital)",
+        does: "Runs an organisation with its own services, prices, availability, branches and staff. Moves appointments through their statuses and writes records for patients they treat.",
+      },
+    ],
+    features: [
+      "Sign-in with Google only. The same button signs patients and providers in, and an account-type step routes each one to their own side.",
+      "A resumable onboarding wizard for providers: organisation type, details and logo, a map pin for the address, clinic and home-visit hours, services with prices, staff invites and verification documents.",
+      "Radius search for clinics and home visits, sorted by distance, with ratings and starting prices.",
+      "Clinic and home-visit booking with a date and time picker. Home visits need a saved address, and the address is shown on a map.",
+      "Appointment lists, detail screens and status changes for both sides. Patients can cancel while the visit is pending or confirmed.",
+      "Patient records: prescriptions and reports stored in a private bucket and opened through short-lived links. Providers can add notes for patients they treat.",
+      "Reviews, which can only be left after a completed visit.",
+      "Saved addresses and family members for patients.",
+      "Over-the-air JavaScript updates, so small fixes skip the store review.",
+    ],
+    highlights: [
+      {
+        title: "Double booking is blocked by the database",
+        body: "A partial unique index covers each organisation, doctor and start time, and ignores cancelled and no-show appointments. Two patients racing for the same slot can't both book it, whatever the screen showed them. A hospital's doctors get separate slots, so one doctor's booking doesn't block a colleague.",
+      },
+      {
+        title: "Patients can only cancel, enforced in the database",
+        body: "Row-level security lets a patient update their own appointments, but it can't limit which columns change. A trigger does: a patient may only move a pending or confirmed visit to cancelled. They can't mark it completed to unlock a review, or change the fee or payment status.",
+      },
+      {
+        title: "Availability is read in the clinic's timezone",
+        body: "Hours are stored as wall-clock times, so a patient in another timezone would see the wrong slots if the device decided. Each organisation stores its own IANA timezone, and slots, the past-slot check and appointment times are all computed in that zone, with the zone shown next to the time.",
+      },
+      {
+        title: "Every row is protected by row-level security",
+        body: "No table is readable by anonymous users. Organisation data is reached through a membership check, verification documents are never visible to patients, and provider records are readable only when a real appointment links the patient to that provider. Public discovery goes through one function that returns a fixed, safe set of columns.",
+      },
+    ],
+  },
+  {
     slug: "nvnt-in",
     title: "nvnt.in",
     description:
